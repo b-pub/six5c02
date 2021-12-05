@@ -1,15 +1,14 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(six65c02 CXX)
+project(six5c02 CXX)
 
-# TODO: sometime add  -Wall -Werror
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -Wall -Werror")
 
 include_directories(include)
 
-# Define the btest static library
+# Define the six5c02 static library
 
-add_library(six65c02 STATIC
+add_library(six5c02 STATIC
     src/insns_6502.cpp
     src/insns_65c02.cpp
     src/instructions.cpp
@@ -24,7 +23,7 @@ add_executable(runtests
     tests/runtests.cpp
 )
 
-target_link_libraries(runtests six65c02)
+target_link_libraries(runtests six5c02)
 
 
 #----------------
@@ -34,4 +33,4 @@ add_executable(bbmachine
     bbmachine/main.cpp
 )
 
-target_link_libraries(bbmachine six65c02)
+target_link_libraries(bbmachine six5c02)

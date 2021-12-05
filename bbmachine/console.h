@@ -9,6 +9,9 @@
  * This device supports a few basic operations:
  *  * Send a character (ASCII) out (appends to buffer).
  *  * Flush the line. This prints it to stdout, and clears the buffer
+ *
+ * Copyright 2021, Brent Burton
+ * See LICENSE file for BSD 2-clause license.
  */
 #ifndef CONSOLE_H
 #define CONSOLE_H

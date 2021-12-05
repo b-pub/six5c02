@@ -1,3 +1,11 @@
+/*
+ * six5c02 -  emulated 6502 chip framework
+ *
+ * CPU framework class implementation
+ *
+ * Copyright 2021, Brent Burton
+ * See LICENSE file for BSD 2-clause license.
+ */
 
 #include <stdio.h>
 #include <stdint.h>

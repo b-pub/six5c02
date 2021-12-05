@@ -1,3 +1,11 @@
+/*
+ * six5c02 -  emulated 6502 chip framework
+ *
+ * 65c02 instruction implementations
+ *
+ * Copyright 2021, Brent Burton
+ * See LICENSE file for BSD 2-clause license.
+ */
 #include "six5c02.h"
 #include "support.h"
 
@@ -8,30 +16,6 @@ namespace six5c02 {
  *
  * Author: Paul Robson (paul@robson.org.uk)
  */
-
-// Indirect without indexation.  (copied from indy)
-void CPU::ind0()
-{
-    uint16_t eahelp, eahelp2;
-    eahelp = (uint16_t)read6502(pc++);
-    eahelp2 = (eahelp & 0xFF00) | ((eahelp + 1) & 0x00FF); //zero-page wraparound
-    ea = (uint16_t)read6502(eahelp) | ((uint16_t)read6502(eahelp2) << 8);
-}
-
-// (Absolute,Indexed) address mode for JMP
-void CPU::ainx()
-{ 		// absolute indexed branch
-    uint16_t eahelp, eahelp2;
-    eahelp = (uint16_t)read6502(pc) | (uint16_t)((uint16_t)read6502(pc+1) << 8);
-    eahelp = (eahelp + (uint16_t)x) & 0xFFFF;
-#if 0
-    eahelp2 = (eahelp & 0xFF00) | ((eahelp + 1) & 0x00FF); //replicate 6502 page-boundary wraparound bug
-#else
-    eahelp2 = eahelp + 1; // the 65c02 doesn't have the bug
-#endif
-    ea = (uint16_t)read6502(eahelp) | ((uint16_t)read6502(eahelp2) << 8);
-    pc += 2;
-}
 
 void CPU::stz()
 {

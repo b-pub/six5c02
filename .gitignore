@@ -25,6 +25,11 @@
 *.out
 *.app
 
+# assembler outputs
+*.bin
+*.lst
+*.map
+
 # Backups, pyc's etc
 *~
 *.bak

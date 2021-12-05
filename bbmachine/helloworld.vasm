@@ -27,8 +27,7 @@ CONS_CMD_CLEAR = $02
 ;;; ----------------
 ;	.ZEROPAGE
 	.org 0
-ptr1:	.word $0000
-cons:	.word CONS_CTRL
+ptr1:	.word $0000			    ; pointer function param
 
 ;;; ----------------
 	.org $0200
@@ -42,7 +41,7 @@ goodbye: .asciiz "Goodbye, World!"
 	sta ptr1+1
 	jsr print
   .endmacro
-	
+
 ;;; ----------------
 ;	.assert * < $0400, error, "Data is too long, extends into $0400"
 ;	.code
@@ -58,21 +57,17 @@ start:
 
 ;;; PRINT subroutine
 ;;; Param: ptr1(zp) contains address of null-terminated string.
-;;; Uses indirect indexed off Y via ptr1
+;;; Uses A,Y.
 print:
 	ldy #0				    ; char index
-next:	lda (ptr1),y
+next:	lda (ptr1),y			    ; next char in A
 	beq flush			    ; if Z, end of string.
-	phy				    ; save Y
 	
-	ldy #1				    ; write char to data reg (cons)+1
-	sta (cons),y
+	sta CONS_DATA1			    ; write char to data reg
 	
-	lda #CONS_CMD_PRINT		    ; write print cmd to ctrl reg (cons)+0
-	ldy #0
-	sta (cons),y
+	lda #CONS_CMD_PRINT		    ; write print cmd to ctrl reg
+	sta CONS_CTRL
 	
-	ply				    ; restore index value
 	iny				    ; incr index
 	jmp next			    ; loop
 	
@@ -80,19 +75,17 @@ flush:	jsr ConsFlush
 	rts
 
 ;;; ConsClear sends the clear command to the console.
-;;; Uses cons(zp) to store I/O address, A, Y.
+;;; Uses A.
 ConsClear:
 	lda #CONS_CMD_CLEAR		    ; write clear command
-	ldy #0
-	sta (cons),y			    ; (cons)+0
+	sta CONS_CTRL
 	rts
 
 ;;; ConsFlush sends the flush command to the console.
-;;; Uses cons(zp) to store I/O address, A, Y.
+;;; Uses A
 ConsFlush:
 	lda #CONS_CMD_FLUSH		    ; write clear command
-	ldy #0
-	sta (cons),y			    ; (cons)+0
+	sta CONS_CTRL
 	rts
 
 ;;;

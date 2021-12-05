@@ -1,3 +1,9 @@
+/*
+ * bbmachine emulated machine
+ *
+ * Copyright 2021, Brent Burton
+ * See LICENSE file for BSD 2-clause license.
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -205,9 +211,6 @@ void runBinary(char const *filename)
         // Run program until STP is issued.
         while (true)
         {
-            uint16_t lastPC = cpu.PC();
-
-            //cpu.exec(1000);
             cpu.step();
             if (cpu.isStopped())
             {
@@ -238,7 +241,6 @@ int main(int argc, char **argv)
 
     const char *filename = argv[1];
 
-#define MM 1000000u
     runBinary(filename);
     return 0;
 }

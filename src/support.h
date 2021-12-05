@@ -1,3 +1,11 @@
+/*
+ * six5c02 -  emulated 6502 chip framework
+ *
+ * supporting macros for ALU flags
+ *
+ * Copyright 2021, Brent Burton
+ * See LICENSE file for BSD 2-clause license.
+ */
 #ifndef SUPPORT_H
 #define SUPPORT_H
 

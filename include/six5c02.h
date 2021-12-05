@@ -1,3 +1,9 @@
+/*
+ * six5c02 -  emulated 6502 chip framework
+ *
+ * Copyright 2021, Brent Burton
+ * See LICENSE file for BSD 2-clause license.
+ */
 #ifndef SIX5C02_H
 #define SIX5C02_H
 
@@ -44,7 +50,7 @@ namespace six5c02 {
 
         uint8_t m_mem[65536];
 
-        IMemoryController() {}
+        IMemoryController() = default;
         virtual ~IMemoryController() {}
 
       private:
@@ -79,11 +85,12 @@ namespace six5c02 {
     };
 
     /**
-     * The CPU class is the main 65c02 emulation core.
+     * The six5c02::CPU class is the main 65c02 emulation core.
      *
-     * After construction, caller should provide a IMemoryController
-     * implementation that contains the memory model, as well as a
-     * ILoopCallback implementation if periodic callbacks are necessary.
+     * After construction, caller should provide an
+     * IMemoryController implementation that contains the memory
+     * model, as well as an ILoopCallback implementation if
+     * periodic callbacks are necessary.
      *
      * Once initialized, call reset(), then either step() to single-step
      * the emulator one instruction at a time, or call exec() to run
@@ -181,20 +188,23 @@ namespace six5c02 {
         bool     stepInstruction();
 
         // Addressing mode methods
-        void imp(); // implied
-        void acc(); // accumulator
-        void imm(); // immediate
-        void zp();  // zero-page
-        void zpx(); // zero-page, X
-        void zpy(); // zero-page, Y
-        void rel(); // relative for branch ops (8b immediate sign-extended value)
-        void abso(); // absolute
-        void absx(); // absolute, X
-        void absy(); // absolute, Y
-        void ind(); // indirect
-        void indx(); // indirect, X
-        void indy(); // indirect, Y
-        void zprel(); // zero-page, relative for branch ops (8b imm val, sign-extended)
+        void abso(); // absolute: a
+        void ainx(); // abs idx indirect: (a,x)
+        void absx(); // absolute indexed, X: a,x
+        void absy(); // absolute indexed, Y: a,y
+        void ind();  // absolute indirect: (a)
+        void acc();  // accumulator
+        void imm();  // immediate
+        void imp();  // implied
+        void rel();  // PC relative: r
+        void zp();   // zero page: zp
+        void indx(); // zero page indexed indirect: (zp,x)
+        void zpx();  // zero page indexed X: zp,x
+        void zpy();  // zero page indexed Y: zp,y
+        void ind0(); // zero page indirect: (zp)
+        void indy(); // zero page indirect indexed Y: (zp),y
+        void zprel(); // zero page relative; zp,rel
+
 
         // Instruction methods
 
@@ -203,7 +213,7 @@ namespace six5c02 {
 
         // 6502 instructions
         void adc();
-        void And();  // capitalized due to C++'s new keyword
+        void And();  // capitalized due to C++'s 'and' keyword
         void asl();
         void bcc();
         void bcs();
@@ -258,10 +268,6 @@ namespace six5c02 {
         void txa();
         void txs();
         void tya();
-
-        // 65c02 addressing modes
-        void ainx();
-        void ind0();
 
         // 65c02 instructions
         void bra();
@@ -328,10 +334,25 @@ namespace six5c02 {
 
 } // ns six5c02
 
-/**
+/*
  * Public utility functions for clients
  */
-void printRegisters(six5c02::CPU &cpu);
-void dumpMem(six5c02::IMemoryController &memory, uint16_t start, uint16_t len);
+
+/**
+ * Print registers in a standard format.
+ */
+void printRegisters(six5c02::CPU const &cpu);
+
+/*
+ * Print memory contents in a hex tabular format with addresses.
+ *
+ * The \c start and \c len parameters can be arbitrary; they do
+ * not need to be multiples of 8 or 16 or anything.
+ *
+ * @param memory The IMemoryController to read
+ * @param start  The starting address. This can be any 16-bit value
+ * @param len    The number of bytes to print out.
+ */
+void dumpMem(six5c02::IMemoryController const &memory, uint16_t start, uint16_t len);
 
 #endif

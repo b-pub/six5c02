@@ -1,7 +1,15 @@
+/*
+ * six5c02 -  emulated 6502 chip framework
+ *
+ * public client utility functions
+ *
+ * Copyright 2021, Brent Burton
+ * See LICENSE file for BSD 2-clause license.
+ */
 #include <stdio.h>
 #include "six5c02.h"
 
-void printRegisters(six5c02::CPU &cpu)
+void printRegisters(six5c02::CPU const &cpu)
 {
     printf("PC   SP A  X  Y  P: NV1BDIZC  Cycles\n");
     printf("%04x %02x %02x %02x %02x %02x %u%u1%u%u%u%u%u  %u\n",
@@ -10,7 +18,7 @@ void printRegisters(six5c02::CPU &cpu)
            cpu.getClockticks());
 }
 
-void dumpMem(six5c02::IMemoryController &memory, uint16_t start, uint16_t len)
+void dumpMem(six5c02::IMemoryController const &memory, uint16_t start, uint16_t len)
 {
     printf("+---- 0x%04x - 0x%04x\n", start, start+len-1);
     uint16_t skip = start % 16;
