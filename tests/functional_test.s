@@ -192,7 +192,8 @@ disable_decimal = 0
 ; please observe that during the test the stack gets invalidated
 ; therefore a RTS inside the success macro is not possible
         .macro  success
-        jmp *           ;test passed, no errors
+        stp
+        ;jmp *           ;test passed, no errors
         .endmacro
     .endif
     .if report = 1
@@ -749,7 +750,7 @@ data_bss_end:
 
         .CODE
         .org code_segment
-        .P02            ; disable 65SC02, 65C02 and 65816 instructions
+        .PC02            ; enable 65C02 for STP
 start:  cld
         ldx #$ff
         txs

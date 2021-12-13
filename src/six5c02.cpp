@@ -91,6 +91,9 @@ void CPU::irq() {
  */
 bool CPU::stepInstruction()
 {
+    if (stopped)
+        return false;
+
     opcode = read6502(pc++);
     status |= FLAG_CONSTANT;
 
