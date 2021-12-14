@@ -1,7 +1,7 @@
 # six5c02
 A 65c02-based virtual machine framework in C++
 
-## What is this?
+## Description
 
 This project is an environment to aid experimentation of computer
 system design and learn how to do some basic things in computers,
@@ -28,7 +28,60 @@ Running the default -O3 optimized build on a 3GHz Intel Core i5
 clock frequency of about 180MHz. That's /a bit/ faster than a
 Commodore PET 2001.
 
-## Due credit
+On a Raspberry Pi 4 at 1.5GHz, the emulated 65c02 core runs at
+about 65MHz. Just for theoretical comparison, if the Pi ran at
+3GHz like the mac, the emulator would be at about 130MHz, so the
+Core i5 has a good speed advantage.
+
+## Building it
+
+This project uses CMake, at least version 3.10. It's easy to build,
+and I build it on Linux and MacOS with:
+
+	$ <git clone the repo, cd into repo>
+	$ mkdir build
+	$ cd build
+	$ cmake ..
+	$ make -j
+
+This builds in a couple seconds, and produces two executable virtual
+machines, named "runtests" and "bbmachine".
+
+These next steps are manual for the time being. Sorry.
+
+Runtests needs test bins to run. Do this to create them:
+
+	$ <still in ..../build from above>
+	$ pushd ../tests
+	$ ./build.sh
+	$ cp *.bin ../build
+	$ popd
+
+Similarly, the bbmachine bin needs to be created:
+
+	$ <still in ..../build from above>
+	$ pushd ../bbmachine
+	$ make
+	$ cp *.bin ../build
+	$ popd
+
+Back in the build directory, each can be run like:
+
+	$ ./runtests
+	$ ./bbmachine helloworld.bin
+
+Runtests looks for and loads a few test .bins that it knows
+about, and runs each. Successful test runs end with "STOPPED"
+since those tests currently don't have any other way to signal
+success or failure short of looping. The "extended_65c02" test is
+not ready and so that test run will fail.
+
+The bbmachine runs a hello world program, using an internal print
+function to a memory-mapped output console, displaying in the
+current shell. It also has STOPPED at the end.
+
+
+# Due credit
 
 This emulation playground would not be possible without a few
 particular projects.
@@ -52,3 +105,4 @@ full-64k memory images of absolute code. http://sun.hasenbraten.de/vasm/
 
 4. The CC65 toolchain, especially ca65, the assembler. See
 https://github.com/cc65/cc65
+

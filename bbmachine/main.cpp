@@ -18,7 +18,7 @@
  *  * 16K of ROM, from 0xC000-0xFFFF
  *
  * RAM:
- *  * 0x00-0xff: normal zero page
+ *  * 0x000-0x0ff: normal zero page
  *  * 0x100-0x1ff: normal stack space
  *  * 0x200-0x3ff: program's use
  *  * 0x400: main entry point
@@ -37,8 +37,6 @@
  * Memory-mapped I/O devices are 0xBF00-0xBFFF.
  *  * 0xBF00 - console control port
  *  * 0xBF01 - console data 1
- *  * 0xBF02 - console data 2
- *  * 0xBF03 - console data 3
  */
 
 class Memory4816: public six5c02::IMemoryController
