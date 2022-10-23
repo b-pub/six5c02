@@ -405,8 +405,10 @@ void CPU::lsr()
     value = getvalue();
     result = value >> 1;
 
-    if (value & 1) setcarry();
-        else clearcarry();
+    if (value & 1)
+        setcarry();
+    else
+        clearcarry();
     zerocalc(result);
     signcalc(result);
 

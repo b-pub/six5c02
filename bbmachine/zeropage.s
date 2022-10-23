@@ -7,14 +7,13 @@
 
 .include "bbmac.inc"
 
-.exportzp ptr1, mulres
+.exportzp ptr1, mulres, NUM1, NUM2
 
 ;;; ----------------
 	.ZEROPAGE
-	.org $0008			    ; reserve first 8 bytes
+	.org 8				  ; reserve first 8 bytes
 
-ptr1:	.word $0000			    ; string pointer param for print()
-mulres: .word $0000			    ; 16b result of mult8
-
-
-
+ptr1:	.word	0	       ; string pointer param for print()
+mulres: .word	0	       ; 16b result of mult8x8
+NUM1:	.byte	0
+NUM2:	.byte	0

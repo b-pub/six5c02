@@ -7,11 +7,19 @@ CA=ca65
 LD=ld65
 CONFIG=bbmachine.cfg
 
-helloworld: zeropage.o rom.o helloworld.o
-	$(LD) $^ -o $@.bin -m $@.map -C $(CONFIG)
+COMMONOBJS=zeropage.o rom.o
+
+all: helloworld.bin math.bin
+
+helloworld.bin: $(COMMONOBJS) helloworld.o
+	$(LD) $^ -o $@ -m $(basename $@).map -C $(CONFIG)
+
+math.bin: $(COMMONOBJS) math.o
+	$(LD) $^ -o $@ -m $(basename $@).map -C $(CONFIG)
 
 .s.o:
 	$(CA) -l $(basename $<).lst $<
 
+.PHONY:
 clean:
 	rm -f *.o *.bin *.map *.lst *~

@@ -4,4 +4,4 @@
 ; Brent Burton
 ; Dec 2021
 ;
-.importzp ptr1, mulres
+.importzp ptr1, mulres, NUM1, NUM2
